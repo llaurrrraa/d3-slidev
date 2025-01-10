@@ -8,10 +8,7 @@ theme: default
 # some information about your slides (markdown enabled)
 title: D3 - 事件、互動、以及動畫
 info: |
-  ## Slidev Starter Template
-  Presentation slides for developers.
-
-  Learn more at [Sli.dev](https://sli.dev)
+  ## D3 第四章
 # apply unocss classes to the current slide
 class: text-center
 # https://sli.dev/features/drawing
@@ -27,9 +24,6 @@ mdc: true
 
 Laura
 
-<!-- <div @click="$slidev.nav.next" class="mt-12 py-1" hover:bg="white op-10">
-  GOGO <carbon:arrow-right />
-</div> -->
 
 <style>
 
@@ -61,6 +55,11 @@ layoutClass: gap-16
 
 <Toc text-sm minDepth="1" maxDepth="2" /> 
 
+<!-- 那我這邊接著講第四章 ```D3的事件、互動和動畫```，
+
+像是 D3 怎麼觸發事件，一些書上的例子跟 code 的部分，
+
+還有 D3 的互動行為以及動畫。  -->
 
 ---
 transition: fade
@@ -114,7 +113,8 @@ mdc: true
 | ------------------------------------------- | --------------------------------------------------- |
 | <kbd>sel.on(types, callback)</kbd>          | 對在 Selection 中的每一個元素新增或移除一個 callback。 <br> <ul><li>types 參數必須是字串</li> <li>若有指定 callback，它會被註冊為事件；已經註冊的事件則會被移除。</li> <li> 若 callback 參數是 null，所有已存在的處理程式均會被移除</li> <li>若沒有設定 callback 參數，則會回傳目前設定的處理程式</li></ul>                       |
 | <kbd>d3.event</kbd>                         | 如果有的話，會包含作為 DOM Event 物件目前的事件。       |
-| <kbd>d3.mouse(parent)</kbd>                 | 傳回一個二元素陣列，此陣列包含相對於 parent 的滑鼠座標。 |
+| <kbd>d3.mouse(parent)</kbd>  ( v6已拿掉 )    | 傳回一個二元素陣列，此陣列包含相對於 parent 的滑鼠座標。 |
+| <kbd>sel.pointer(event)</kbd>               | 傳回一個二元素陣列，此陣列包含相對於 parent 的滑鼠座標。   |
 | <kbd>sel.dispatch(type)</kbd>               | 指派指定型態的自訂事件到目前 selection 中的所有元素。    |
 <style>
 p {
@@ -139,10 +139,15 @@ td {
 
 如果一個事件處理器已經被 on() 註冊到某一個事件型態，則會在新的事件處理器註冊之前先把舊的移除。
 
-為了明確地移除特定事件型態的事件處理器，可以在第二個參數中提供一個null值  -->
+為了明確地移除特定事件型態的事件處理器，可以在第二個參數中提供一個null值。
+
+要另外注意的是書上寫的是 d3.mouse，原本的範例也是使用這個方法，但在 d3 第六版被拿掉了，
+
+所以後面的 code 也會改成用新的方法，改用 d3.pointer
+  -->
 
 ---
-transition: slide-down
+transition: slide-up
 ---
 ## 使用滑鼠探索圖形
 
@@ -210,7 +215,8 @@ svg {
 
 
 ---
-
+transition: slide-up
+---
 
 ## 案例研究 - 同步強調效果
 : 在進行多變量資料集中常見的問題，如何連結兩個不同的視圖或是映射，以下是簡化過的例子。
@@ -303,8 +309,7 @@ Notes can also sync with clicks
 -->
 
 ---
-# layout: two-cols
-# layoutClass: gap-12
+transition: fade
 ---
 
 ## 同步效果 code(1)
@@ -342,10 +347,12 @@ Notes can also sync with clicks
  -->
 
 ---
+transition: slide-up
+---
 
 ## 同步效果 code(2)
 
-```js {*|2|5|6|10|11|12-18|22-25|*}
+```js {*|2|5|6-10|10|11|12-18|22-25|*}
 function installHandlers2( svg, data, cs1, cs2, sc1, sc2 ) {
   const cursor = svg.append( "circle" ).attr( "r", 50 )          
     .attr( "fill", "none" ).attr( "stroke", "black" )
@@ -392,6 +399,7 @@ function installHandlers2( svg, data, cs1, cs2, sc1, sc2 ) {
 -->
 
 ---
+transition: slide-up
 class: px-20
 ---
 
@@ -475,7 +483,7 @@ svg {
 
 [click] 2. 使用 on 去建立事件，start 這行處理儲存被選擇到的圓形當前顏色。然後變更此圓形的顏色，並把此圓形本身儲存到 widget 這個變數。
 
-[click] 3. drag 事件擷取目前的滑鼠座標，然後把選取到的圓形移動到這個位置。
+[click] 3. drag 事件擷取目前的滑鼠座標，然後把選取到的圓形移動到相對應的位置。
 
 [click] 4. end 事件回復目前圓形的顏色，並清除作用中的 widget。
 
